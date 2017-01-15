@@ -56,7 +56,7 @@ iDialog.matches('skipIntro', [
             
             request.post(options, function (err, httpResponse, body){
                 //console.log("Body: " + body.scores);
-                //builder.Prompts.text(session, body.scores);
+                builder.Prompts.text(session, body);
                 // console.log("Error: " + err);
                 // console.log("Body: " + body);
                 builder.Prompts.text(session, "HAHAHAHA SADER");
