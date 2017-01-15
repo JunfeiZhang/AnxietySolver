@@ -50,7 +50,7 @@ iDialog.matches('skipIntro', [
             var options = {
                 uri: "https://api.projectoxford.ai/emotion/v1.0/recognize",
                 headers: {
-                    "Ocp-Apim-Subscription-Key": "ae677e2ca7bf470294d8ba60a788ab4a",
+                    "Ocp-Apim-Subscription-Key": "94f9f2bdd86b4bffa775d4b35da04dfa",
                     "Content-Type": "application/octet-stream"
                 },
                 body: attachment.contentUrl
