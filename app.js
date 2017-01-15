@@ -41,18 +41,23 @@ iDialog.matches('skipIntro', [
     function (session, next) {
         var msg = session.message;
         if (msg.attachments.length) {
+            
 
             // Message with attachment, proceed to download it.
             // Skype attachment URLs are secured by a JwtToken, so we need to pass the token from our bot.
             var attachment = msg.attachments[0];
             console.log(attachment.contentUrl + ".jpg");
+            var body = { };
+            body.url = attachment.contentUrl;
+            console.log("my json is !" + body);
             builder.Prompts.text(session, attachment.contentUrl);
             var options = {
                 uri: "https://api.projectoxford.ai/emotion/v1.0/recognize",
                 headers: {
-                    "Ocp-Apim-Subscription-Key": "94f9f2bdd86b4bffa775d4b35da04dfa"
+                    "Ocp-Apim-Subscription-Key": "94f9f2bdd86b4bffa775d4b35da04dfa",
+                    "Content-Type": "application/json"
                 },
-                body: attachment.contentUrl
+                body: body
             };
             console.log("options", options);
             builder.Prompts.text(session, JSON.stringify(options));		             
