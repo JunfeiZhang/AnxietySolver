@@ -41,8 +41,6 @@ iDialog.matches('skipIntro', [
     function (session, next) {
         var msg = session.message;
         if (msg.attachments.length) {
-            
-
             // Message with attachment, proceed to download it.
             // Skype attachment URLs are secured by a JwtToken, so we need to pass the token from our bot.
             var attachment = msg.attachments[0];
@@ -66,8 +64,17 @@ iDialog.matches('skipIntro', [
             request.post(options, function (err, httpResponse, body){
                 //console.log("Body: " + body.scores);
                 builder.Prompts.text(session, body);
-                // console.log("Error: " + err);
-                // console.log("Body: " + body);
+                // var info = body[0].scores.happiness;
+                // var ifHappy = body[0].scores.happiness + body[0].scores.surprise;
+                // var ifSad = body[0].scores.anger + body[0].scores.contempt + body[0].scores.disgust + body[0].scores.fear + body[0].scores.sadness;
+                // var result;
+                // if(ifHappy >= 0.5 && ifSad < 0.5){
+                //     result = "Happy";
+                // }else if(ifHappy < 0.5 && ifSad >= 0.5){
+                //     result = "Sad";
+                // }else{
+                //     result="OK";
+                // }
                 builder.Prompts.text(session, "HAHAHAHA SADER");
 
             });
@@ -108,3 +115,17 @@ var obtainToken = Promise.promisify(connector.getAccessToken.bind(connector));
 var isSkypeMessage = function (message) {
     return message.source === 'skype';
 };
+
+
+// Read Synchrously
+//  console.log("\n *START* \n");
+//  var content = fs.readFileSync("test.json");
+//  console.log("Output Content : \n"+ content);
+//  console.log("\n *EXIT* \n");
+
+// var data = JSON.parse(content)
+// console.log(data['arr[]']);
+// var body = JSON.parse(content);
+
+
+// console.log(result);
