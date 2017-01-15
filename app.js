@@ -118,7 +118,7 @@ iDialog.matches('skipIntro', [
     }
 ]);
 
-iDialog.matches('/beHappy', [
+iDialog.matches('beHappy', [
     function (session, args, next) {
         builder.Prompts.text(session, 'Do you wanna take a small test?(Upload a photo of you)');
     },
