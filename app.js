@@ -28,7 +28,54 @@ var bot = new builder.UniversalBot(connector);
 var model = 'https://api.projectoxford.ai/luis/v2.0/apps/e1a8acae-662e-4837-bf0a-c531b2fdafcc?subscription-key=fd596b70161840649483bf6f3e2ae354&verbose=true';
 var recognizer = new builder.LuisRecognizer(model);
 var iDialog = new builder.IntentDialog({ recognizers: [recognizer] });
-bot.dialog('/', iDialog);
+bot.dialog('/', [
+    function (session, args, next) {
+        builder.Prompts.text(session, 'Do you wanna take a small test?(Upload a photo of you)');
+    },
+    function (session, next) {
+        var msg = session.message;
+        if (msg.attachments.length) {
+            // Message with attachment, proceed to download it.
+            // Skype attachment URLs are secured by a JwtToken, so we need to pass the token from our bot.
+            var attachment = msg.attachments[0];
+            console.log(attachment.contentUrl + ".jpg");
+            picURL = attachment.contentUrl;
+            var postData = { "url": picURL };
+            var npostData = JSON.stringify(postData);
+            console.log("my json is !" + npostData);
+            //builder.Prompts.text(session, attachment.contentUrl);
+            var options = {
+                uri: "https://api.projectoxford.ai/emotion/v1.0/recognize",
+                headers: {
+                    "Ocp-Apim-Subscription-Key": "94f9f2bdd86b4bffa775d4b35da04dfa",
+                    "Content-Type": "application/json"
+                },
+                body: npostData
+            };
+            console.log("options", options);
+            //builder.Prompts.text(session, JSON.stringify(options));		             
+
+            request.post(options, function (err, httpResponse, body){
+                //builder.Prompts.text(session, body);
+                body = JSON.parse(body);
+                // var angerScore = body[0].scores.anger.toString();
+                // builder.Prompts.text(session, angerScore);
+                var info = body[0].scores.happiness;
+                var ifHappy = body[0].scores.happiness + body[0].scores.surprise;
+                var ifSad = body[0].scores.anger + body[0].scores.contempt + body[0].scores.disgust + body[0].scores.fear + body[0].scores.sadness;
+                var result;
+                if(ifHappy >= 0.5 && ifSad < 0.5){
+                    result = "You are looking great";
+                }else if(ifHappy < 0.5 && ifSad >= 0.5){
+                    result = "It seems that you are not very happy";
+                }else{
+                    result="You look fine";
+                }
+                 builder.Prompts.text(session, result);
+                 session.beginDialog("/img");
+            });
+        }
+    }]);
 
 server.post('/api/messages', connector.listen());
 
@@ -87,7 +134,7 @@ bot.dialog('/joke', [
 
 // Add intent handlers
 
-iDialog.matches('skipIntro', [
+bot.dialog('skipIntro', [
     function (session, args, next) {
         // builder.Prompts.text(session, "img");
         var msg = new builder.Message(session)
@@ -118,57 +165,57 @@ iDialog.matches('skipIntro', [
     }
 ]);
 
-iDialog.matches('beHappy', [
-    function (session, args, next) {
-        builder.Prompts.text(session, 'Do you wanna take a small test?(Upload a photo of you)');
-    },
-    function (session, next) {
-        var msg = session.message;
-        if (msg.attachments.length) {
-            // Message with attachment, proceed to download it.
-            // Skype attachment URLs are secured by a JwtToken, so we need to pass the token from our bot.
-            var attachment = msg.attachments[0];
-            console.log(attachment.contentUrl + ".jpg");
-            picURL = attachment.contentUrl;
-            var postData = { "url": picURL };
-            var npostData = JSON.stringify(postData);
-            console.log("my json is !" + npostData);
-            //builder.Prompts.text(session, attachment.contentUrl);
-            var options = {
-                uri: "https://api.projectoxford.ai/emotion/v1.0/recognize",
-                headers: {
-                    "Ocp-Apim-Subscription-Key": "94f9f2bdd86b4bffa775d4b35da04dfa",
-                    "Content-Type": "application/json"
-                },
-                body: npostData
-            };
-            console.log("options", options);
-            //builder.Prompts.text(session, JSON.stringify(options));		             
+// iDialog.matches('beHappy', [
+//     function (session, args, next) {
+//         builder.Prompts.text(session, 'Do you wanna take a small test?(Upload a photo of you)');
+//     },
+//     function (session, next) {
+//         var msg = session.message;
+//         if (msg.attachments.length) {
+//             // Message with attachment, proceed to download it.
+//             // Skype attachment URLs are secured by a JwtToken, so we need to pass the token from our bot.
+//             var attachment = msg.attachments[0];
+//             console.log(attachment.contentUrl + ".jpg");
+//             picURL = attachment.contentUrl;
+//             var postData = { "url": picURL };
+//             var npostData = JSON.stringify(postData);
+//             console.log("my json is !" + npostData);
+//             //builder.Prompts.text(session, attachment.contentUrl);
+//             var options = {
+//                 uri: "https://api.projectoxford.ai/emotion/v1.0/recognize",
+//                 headers: {
+//                     "Ocp-Apim-Subscription-Key": "94f9f2bdd86b4bffa775d4b35da04dfa",
+//                     "Content-Type": "application/json"
+//                 },
+//                 body: npostData
+//             };
+//             console.log("options", options);
+//             //builder.Prompts.text(session, JSON.stringify(options));		             
 
-            request.post(options, function (err, httpResponse, body){
-                //builder.Prompts.text(session, body);
-                body = JSON.parse(body);
-                // var angerScore = body[0].scores.anger.toString();
-                // builder.Prompts.text(session, angerScore);
-                var info = body[0].scores.happiness;
-                var ifHappy = body[0].scores.happiness + body[0].scores.surprise;
-                var ifSad = body[0].scores.anger + body[0].scores.contempt + body[0].scores.disgust + body[0].scores.fear + body[0].scores.sadness;
-                var result;
-                if(ifHappy >= 0.5 && ifSad < 0.5){
-                    result = "You are looking great";
-                }else if(ifHappy < 0.5 && ifSad >= 0.5){
-                    result = "It seems that you are not very happy";
-                }else{
-                    result="You look fine";
-                }
-                 builder.Prompts.text(session, result);
-                 session.beginDialog("/img");
-            });
-        }
-    }
-]);
+//             request.post(options, function (err, httpResponse, body){
+//                 //builder.Prompts.text(session, body);
+//                 body = JSON.parse(body);
+//                 // var angerScore = body[0].scores.anger.toString();
+//                 // builder.Prompts.text(session, angerScore);
+//                 var info = body[0].scores.happiness;
+//                 var ifHappy = body[0].scores.happiness + body[0].scores.surprise;
+//                 var ifSad = body[0].scores.anger + body[0].scores.contempt + body[0].scores.disgust + body[0].scores.fear + body[0].scores.sadness;
+//                 var result;
+//                 if(ifHappy >= 0.5 && ifSad < 0.5){
+//                     result = "You are looking great";
+//                 }else if(ifHappy < 0.5 && ifSad >= 0.5){
+//                     result = "It seems that you are not very happy";
+//                 }else{
+//                     result="You look fine";
+//                 }
+//                  builder.Prompts.text(session, result);
+//                  session.beginDialog("/img");
+//             });
+//         }
+//     }
+// ]);
 
-iDialog.onDefault(builder.DialogAction.send("How are you today?"));
+// iDialog.onDefault(builder.DialogAction.send("How are you today?"));
 
 // Helper methods
 
