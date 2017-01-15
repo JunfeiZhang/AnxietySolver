@@ -90,10 +90,10 @@ iDialog.matches('beHappy', [
                 body: npostData
             };
             console.log("options", options);
-            builder.Prompts.text(session, JSON.stringify(options));		             
+            //builder.Prompts.text(session, JSON.stringify(options));		             
 
             request.post(options, function (err, httpResponse, body){
-                builder.Prompts.text(session, body);
+                //builder.Prompts.text(session, body);
                 body = JSON.parse(body);
                 // var angerScore = body[0].scores.anger.toString();
                 // builder.Prompts.text(session, angerScore);
@@ -109,7 +109,7 @@ iDialog.matches('beHappy', [
                     result="You look fine";
                 }
                  builder.Prompts.text(session, result);
-                
+                 session.beginDialog('skipIntro');
             });
         }
     }
