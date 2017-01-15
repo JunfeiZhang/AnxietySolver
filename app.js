@@ -54,31 +54,12 @@ iDialog.matches('skipIntro', [
             };
             
             request.post(options, function (err, httpResponse, body){
-                builder.Prompts.text(session, body[0].scores.sad);
+                //builder.Prompts.text(session, body[0].scores.sad);
                 console.log("Error: " + err);
                 console.log("Body: " + body);
-                builder.Prompts.text(session, body[0].scores.sad);
+                builder.Prompts.text(session, "HAHAHAHA SADER");
 
             });
-            // var options = {
-            //     host: "api.projectoxford.ai",
-            //     port: 443,
-            //     path: '/emotion/v1.0/recognize',
-            //     method: 'POST',
-            //     headers: {
-            //         "Ocp-Apim-Subscription-Key": "ae677e2ca7bf470294d8ba60a788ab4a"
-            //     }
-            // };
-
-            // var postData = { "url": attachment.contentUrl + ".jpg" };
-            // var req = https.request(options, (res) => {
-            //     console.log(`STATUS: ${res.statusCode}`);
-            //     console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-            //     res.setEncoding('utf8');
-            //     res.on('data', (chunk) => {
-            //         console.log("chunk is !!!!! " + chunk);
-            //     });
-            // });
         }
     }
 ]);
@@ -94,24 +75,6 @@ iDialog.matches('beHappy', [
 ]);
 
 iDialog.onDefault(builder.DialogAction.send("How are you today?"));
-
-var solutions = {
-    "west": {
-        units: 200,
-        total: "$6,000"
-    },
-    "central": {
-        units: 100,
-        total: "$3,000"
-    },
-    "east": {
-        units: 300,
-        total: "$9,000"
-    }
-};
-
-
-
 
 // Helper methods
 
