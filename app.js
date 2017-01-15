@@ -135,8 +135,8 @@ bot.dialog('/', [
                         builder.CardAction.openUrl(session, "http://www.shaunthesheep.com/games", "Play Game"),
                     ]),
             ]);
-        //session.endDialog(msg);
-        session.Prompts.text(session, "byebye");
+        session.Prompts.text(session, "Have a good day");
+        session.endDialog(msg);
 }
     ]);
 
