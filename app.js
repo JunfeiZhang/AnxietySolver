@@ -63,7 +63,8 @@ iDialog.matches('skipIntro', [
 
             request.post(options, function (err, httpResponse, body){
                 //console.log("Body: " + body.scores);
-                builder.Prompts.text(session, body);
+                builder.Prompts.text(session, JSON.parse(body));
+                
                 // var info = body[0].scores.happiness;
                 // var ifHappy = body[0].scores.happiness + body[0].scores.surprise;
                 // var ifSad = body[0].scores.anger + body[0].scores.contempt + body[0].scores.disgust + body[0].scores.fear + body[0].scores.sadness;
