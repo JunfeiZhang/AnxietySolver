@@ -71,6 +71,7 @@ iDialog.matches('skipIntro', [
                 // console.log("aaaaa  ccc" + theBody[0]);
                 // console.log("aaaaa  ddd" + theBody[0].scores);
                 // console.log("aaaaa  eee" + theBody[0].scores.anger);
+                bulider.Prompts.text(session, "your result: "+body);
                  var angerScore = "" + theBody[0].scores.anger;
                  builder.Prompts.text(session, angerScore);
                 
@@ -86,7 +87,7 @@ iDialog.matches('skipIntro', [
                 //     result="OK";
                 // }
                 // builder.Prompts.text(session, "HAHAHAHA SADER");
-                bulider.Prompts.text(session, "your result: "+body);
+                
             });
         }
     }
