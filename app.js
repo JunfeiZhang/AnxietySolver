@@ -64,27 +64,21 @@ iDialog.matches('skipIntro', [
 
             request.post(options, function (err, httpResponse, body){
                 builder.Prompts.text(session, body);
-                //console.log("Body: " + body.scores);
                 var theBody = JSON.parse(body);
 
-                console.log(typeof theBody[0].scores.anger);
-                console.log(parseFloat(theBody[0].scores.anger));
-
-                var angerScore = JSON.stringify(theBody[0].scores.anger);
+                var angerScore = theBody[0].scores.anger.toString();
                 builder.Prompts.text(session, angerScore);
-                var numberScore = Number(angerScore);
-                builder.Prompts.text(session, numberScore);
-                // var info = body[0].scores.happiness;
-                // var ifHappy = body[0].scores.happiness + body[0].scores.surprise;
-                // var ifSad = body[0].scores.anger + body[0].scores.contempt + body[0].scores.disgust + body[0].scores.fear + body[0].scores.sadness;
-                // var result;
-                // if(ifHappy >= 0.5 && ifSad < 0.5){
-                //     result = "Happy";
-                // }else if(ifHappy < 0.5 && ifSad >= 0.5){
-                //     result = "Sad";
-                // }else{
-                //     result="OK";
-                // }
+                var info = body[0].scores.happiness;
+                var ifHappy = body[0].scores.happiness + body[0].scores.surprise;
+                var ifSad = body[0].scores.anger + body[0].scores.contempt + body[0].scores.disgust + body[0].scores.fear + body[0].scores.sadness;
+                var result;
+                if(ifHappy >= 0.5 && ifSad < 0.5){
+                    result = "Happy";
+                }else if(ifHappy < 0.5 && ifSad >= 0.5){
+                    result = "Sad";
+                }else{
+                    result="OK";
+                }
                  builder.Prompts.text(session, "HAHAHAHA SADER");
                 
             });
