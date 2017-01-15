@@ -1,0 +1,26 @@
+{
+  "name": "ax",
+  "version": "1.0.0",
+  "description": "AnxietySolver",
+  "main": "index.js",
+  "scripts": {
+    "test": "ax"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harvey940906/AnxietySolver.git"
+  },
+  "keywords": [
+    "ax"
+  ],
+  "author": "ax team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/harvey940906/AnxietySolver/issues"
+  },
+  "homepage": "https://github.com/harvey940906/AnxietySolver#readme",
+  "dependencies": {
+    "botbuilder": "^3.5.3",
+    "restify": "^4.3.0"
+  }
+}
