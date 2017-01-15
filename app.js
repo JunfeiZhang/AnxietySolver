@@ -24,10 +24,14 @@ var connector = new builder.ChatConnector({
 var bot = new builder.UniversalBot(connector);
 //var intents = new builder.IntentDialog();
 
-// Create LUIS recognizer that points at our model and add it as the root '/' dialog for our Cortana Bot.
-var model = 'https://api.projectoxford.ai/luis/v2.0/apps/e1a8acae-662e-4837-bf0a-c531b2fdafcc?subscription-key=fd596b70161840649483bf6f3e2ae354&verbose=true';
-var recognizer = new builder.LuisRecognizer(model);
-var iDialog = new builder.IntentDialog({ recognizers: [recognizer] });
+// // Create LUIS recognizer that points at our model and add it as the root '/' dialog for our Cortana Bot.
+// var model = 'https://api.projectoxford.ai/luis/v2.0/apps/e1a8acae-662e-4837-bf0a-c531b2fdafcc?subscription-key=fd596b70161840649483bf6f3e2ae354&verbose=true';
+// var recognizer = new builder.LuisRecognizer(model);
+// var iDialog = new builder.IntentDialog({ recognizers: [recognizer] });
+
+server.post('/api/messages', connector.listen());
+
+
 bot.dialog('/', [
     function (session, args, next) {
         builder.Prompts.text(session, 'Do you wanna take a small test?(Upload a photo of you)');
@@ -72,12 +76,10 @@ bot.dialog('/', [
                     result="You look fine";
                 }
                  builder.Prompts.text(session, result);
-                 session.beginDialog("/img");
+                 session.beginDialog('/img');
             });
         }
     }]);
-
-server.post('/api/messages', connector.listen());
 
 bot.dialog('/img', [
     function (session, args, next) {
@@ -100,9 +102,9 @@ bot.dialog('/img', [
     function (session, result) {
         if (results.response) {
             if(results.response.entity == 1){
-                session.beginDialog("/img");
+                session.beginDialog('/img');
             } else {
-                session.beginDialog("/joke");
+                session.beginDialog('/joke');
             }
         } else {
             session.send("ok");
@@ -120,9 +122,9 @@ bot.dialog('/joke', [
     function (session, result) {
         if (results.response) {
             if(results.response.entity == 2){
-                session.beginDialog("/img");
+                session.beginDialog('/img');
             } else {
-                session.beginDialog("/joke");
+                session.beginDialog('/joke');
             }
         } else {
             session.send("ok");
@@ -134,36 +136,36 @@ bot.dialog('/joke', [
 
 // Add intent handlers
 
-bot.dialog('skipIntro', [
-    function (session, args, next) {
-        // builder.Prompts.text(session, "img");
-        var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
-                    .title("Cute Images")
-                    .subtitle("")
-                    .text("Life is colorful! Do you feel any better?")
-                    .images([
-                        builder.CardImage.create(session, "http://d13yacurqjgara.cloudfront.net/users/925514/screenshots/2612233/egg_new-01.jpg")
-                    ])
-                    .tap(builder.CardAction.openUrl(session, ""))
-            ]);
-            session.send(msg);
-        builder.Prompts.choice(session, "Do you like it?", "Yes,show me more|No, anything else?"); 
-    },
-    function (session, result) {
-        if (results.response) {
-            if(results.response.entity == 1){
-                session.beginDialog("/img");
-            } else {
-                session.beginDialog("/joke");
-            }
-        } else {
-            session.send("ok");
-        }
-    }
-]);
+// bot.dialog('skipIntro', [
+//     function (session, args, next) {
+//         // builder.Prompts.text(session, "img");
+//         var msg = new builder.Message(session)
+//             .textFormat(builder.TextFormat.xml)
+//             .attachments([
+//                 new builder.HeroCard(session)
+//                     .title("Cute Images")
+//                     .subtitle("")
+//                     .text("Life is colorful! Do you feel any better?")
+//                     .images([
+//                         builder.CardImage.create(session, "http://d13yacurqjgara.cloudfront.net/users/925514/screenshots/2612233/egg_new-01.jpg")
+//                     ])
+//                     .tap(builder.CardAction.openUrl(session, ""))
+//             ]);
+//             session.send(msg);
+//         builder.Prompts.choice(session, "Do you like it?", "Yes,show me more|No, anything else?"); 
+//     },
+//     function (session, result) {
+//         if (results.response) {
+//             if(results.response.entity == 1){
+//                 session.beginDialog("/img");
+//             } else {
+//                 session.beginDialog("/joke");
+//             }
+//         } else {
+//             session.send("ok");
+//         }
+//     }
+// ]);
 
 // iDialog.matches('beHappy', [
 //     function (session, args, next) {
