@@ -35,9 +35,39 @@ server.post('/api/messages', connector.listen());
 // Add intent handlers
 iDialog.matches('skipIntro', [
     function (session, args, next) {
+        // builder.Prompts.text(session, "img");
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    .title("Cute Images")
+                    .subtitle("")
+                    .text("Life is colorful! Do you feel any better?")
+                    .images([
+                        builder.CardImage.create(session, "http://d13yacurqjgara.cloudfront.net/users/925514/screenshots/2612233/egg_new-01.jpg")
+                    ])
+                    .tap(builder.CardAction.openUrl(session, ""))
+            ]);
+            session.send(msg);
+        builder.Prompts.choice(session, "Do you like it?", "Yes,show me more|No, anything else?"); 
+    },
+    function (session, result) {
+        if (results.response) {
+            if(results.response.entity == 1){
+                session.replaceDialog('skipIntro', true);
+            } else {
+                var joke = jokes[0];
+                session.send("%(content)s", joke); 
+            }
+        } else {
+            session.send("ok");
+        }
+    }
+]);
 
-        builder.Prompts.text(session, "img");
-        //builder.Prompts.choice(session, "Which region would you like sales for?", salesData); 
+iDialog.matches('beHappy', [
+    function (session, args, next) {
+        builder.Prompts.text(session, 'Do you wanna take a small test?(Upload a photo of you)');
     },
     function (session, next) {
         var msg = session.message;
@@ -65,19 +95,18 @@ iDialog.matches('skipIntro', [
             request.post(options, function (err, httpResponse, body){
                 builder.Prompts.text(session, body);
                 body = JSON.parse(body);
-
-                var angerScore = body[0].scores.anger.toString();
-                builder.Prompts.text(session, angerScore);
+                // var angerScore = body[0].scores.anger.toString();
+                // builder.Prompts.text(session, angerScore);
                 var info = body[0].scores.happiness;
                 var ifHappy = body[0].scores.happiness + body[0].scores.surprise;
                 var ifSad = body[0].scores.anger + body[0].scores.contempt + body[0].scores.disgust + body[0].scores.fear + body[0].scores.sadness;
                 var result;
                 if(ifHappy >= 0.5 && ifSad < 0.5){
-                    result = "Happy";
+                    result = "You are looking great";
                 }else if(ifHappy < 0.5 && ifSad >= 0.5){
-                    result = "Sad";
+                    result = "It seems that you are not very happy";
                 }else{
-                    result="OK";
+                    result="You look fine";
                 }
                  builder.Prompts.text(session, result);
                 
@@ -86,19 +115,16 @@ iDialog.matches('skipIntro', [
     }
 ]);
 
-iDialog.matches('beHappy', [
-    function (session, args, next) {
-        builder.Prompts.text(session, 'beHappy');
-
-    },
-    function (session, results) {
-        builder.Prompts.text(session, 'beHappy2');
-    }
-]);
-
 iDialog.onDefault(builder.DialogAction.send("How are you today?"));
 
 // Helper methods
+
+var jokes = {
+    "one": {
+        content: "Q: how many programmers does it take to change a light bulb? A: none, that's a hardware problem"
+    }
+
+}
 
 // Request file with Authentication Header
 var requestWithToken = function (url) {
