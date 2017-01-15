@@ -1,4 +1,5 @@
 var https = require('https');
+var fs = require('fs');
 
 var options = {
     host: "api.projectoxford.ai",
@@ -23,6 +24,12 @@ var req = https.request(options, (res) => {
         // console.log(`BODY: ${chunk}`);
         result = JSON.parse(chunk);
         console.log(`BODY:`, chunk);
+        fs.writeFile("/Users/apple/Desktop/AnxietySolver/test.js",chunk, function(err) {
+            if(err) {
+                return console.log(err);
+        }
+            console.log("The file was saved!");
+        }); 
     });
     res.on('end', () => {
         console.log('No more data in response.');
@@ -34,9 +41,16 @@ req.on('error', (e) => {
 });
 
 
-console.log("result is ",result);
+// console.log("result is ",result);
 
 
 // write data to request body
+// fs.writeFile("/Users/apple/Desktop/AnxietySolver/test.js",postData, function(err) {
+//     if(err) {
+//         return console.log(err);
+//     }
+
+//     console.log("The file was saved!");
+// }); 
 req.write(JSON.stringify(postData));
 req.end();
