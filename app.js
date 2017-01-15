@@ -1,6 +1,9 @@
 var restify = require('restify');
 var builder = require('botbuilder');
-
+var Promise = require('bluebird');
+var request = require('request-promise').defaults({ encoding: null });
+var fs = require('fs');
+var request = require('request');
 //=========================================================
 // Bot Setup
 //=========================================================
@@ -8,9 +11,9 @@ var builder = require('botbuilder');
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
-   console.log('%s listening to %s', server.name, server.url); 
+    console.log('%s listening to %s', server.name, server.url);
 });
-  
+
 // Create chat bot
 var connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
@@ -30,15 +33,49 @@ server.post('/api/messages', connector.listen());
 // Add intent handlers
 iDialog.matches('skipIntro', [
     function (session, args, next) {
-        
-        builder.Prompts.choice(session, "Which region would you like sales for?", salesData); 
+        builder.Prompts.text(session, "img");
+        //builder.Prompts.choice(session, "Which region would you like sales for?", salesData); 
     },
-    function (session, results) {
-        if (results.response) {
-            var region = salesData[results.response.entity];
-            session.send("We sold %(units)d units for a total of %(total)s.", region); 
-        } else {
-            session.send("ok");
+    function (session, next) {
+        var msg = session.message;
+        if (msg.attachments.length) {
+
+            // Message with attachment, proceed to download it.
+            // Skype attachment URLs are secured by a JwtToken, so we need to pass the token from our bot.
+            var attachment = msg.attachments[0];
+            console.log(attachment.contentUrl + ".jpg");
+            var options = {
+                uri: "https://api.projectoxford.ai/emotion/v1.0/recognize",
+                headers: {
+                    "Ocp-Apim-Subscription-Key": "ae677e2ca7bf470294d8ba60a788ab4a",
+                    "Content-Type": "application/octet-stream"
+                },
+                body: attachment.contentUrl + ".jpg"
+            };
+
+            request.post(options, function (err, httpResponse, body){
+                console.log("Error: " + err);
+                console.log("Body: " + body);
+            });
+            // var options = {
+            //     host: "api.projectoxford.ai",
+            //     port: 443,
+            //     path: '/emotion/v1.0/recognize',
+            //     method: 'POST',
+            //     headers: {
+            //         "Ocp-Apim-Subscription-Key": "ae677e2ca7bf470294d8ba60a788ab4a"
+            //     }
+            // };
+
+            // var postData = { "url": attachment.contentUrl + ".jpg" };
+            // var req = https.request(options, (res) => {
+            //     console.log(`STATUS: ${res.statusCode}`);
+            //     console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+            //     res.setEncoding('utf8');
+            //     res.on('data', (chunk) => {
+            //         console.log("chunk is !!!!! " + chunk);
+            //     });
+            // });
         }
     }
 ]);
@@ -46,16 +83,16 @@ iDialog.matches('skipIntro', [
 iDialog.matches('beHappy', [
     function (session, args, next) {
         builder.Prompts.text(session, 'beHappy');
-        
+
     },
     function (session, results) {
-       builder.Prompts.text(session, 'beHappy2');
+        builder.Prompts.text(session, 'beHappy2');
     }
 ]);
 
 iDialog.onDefault(builder.DialogAction.send("How are you today?"));
 
-var salesData = {
+var solutions = {
     "west": {
         units: 200,
         total: "$6,000"
@@ -70,46 +107,27 @@ var salesData = {
     }
 };
 
-// Very simple alarm scheduler
-// var alarms = {};
-// setInterval(function () {
-//     var now = new Date().getTime();
-//     for (var key in alarms) {
-//         var alarm = alarms[key];
-//         if (now >= alarm.timestamp) {
-//             var msg = new builder.Message()
-//                 .address(alarm.address)
-//                 .text("Here's your '%s' alarm.", alarm.title);
-//             bot.send(msg);
-//             delete alarms[key];
-//         }
-//     }
-// }, 15000);
 
-//=========================================================
-// Bots Dialogs
-//=========================================================
 
-// bot.dialog('/', [
-//     function (session, args, next) {
-//         if (session.userData.name) {
-//             session.beginDialog('/profil');
-//         } else {
-//             next();
-//         }
-//     },
-//     function (session, results) {
-//         session.send('Hello %s!', session.userData.name);
-//     }
-// ]);
 
-// bot.dialog('/profil', [
-//     function (session) {
-//         builder.Prompts.text(session, 'Hi! What is your name?');
-//     },
-//     function (session, results) {
-//         console.log("test: "+results.response);
-//         session.userData.name = results.response;
-//         session.endDialog();
-//     }
-// ]);
+// Helper methods
+
+// Request file with Authentication Header
+var requestWithToken = function (url) {
+    return obtainToken().then(function (token) {
+        return request({
+            url: url,
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/octet-stream'
+            }
+        });
+    });
+};
+
+// Promise for obtaining JWT Token (requested once)
+var obtainToken = Promise.promisify(connector.getAccessToken.bind(connector));
+
+var isSkypeMessage = function (message) {
+    return message.source === 'skype';
+};
