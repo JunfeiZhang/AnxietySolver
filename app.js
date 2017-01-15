@@ -97,12 +97,13 @@ bot.dialog('/', [
         builder.Prompts.choice(session, "Do you like it?", "Yes,show me more|No, anything else?"); 
         
     },
-    function (session, next) {
-        // builder.Prompts.text(session, "img");
-        var joke = jokes[0];
-        session.send("%(content)s", joke); 
-        builder.Prompts.choice(session, "Do you like it?", "Yes,show me more|No, anything else?"); 
-    },function(session, next){
+    // function (session, next) {
+    //     // builder.Prompts.text(session, "img");
+    //     var joke = jokes[0];
+    //     session.send("%(content)s", joke); 
+    //     builder.Prompts.choice(session, "Do you like it?", "Yes,show me more|No, anything else?"); 
+    // },
+    function(session, next){
         msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
             .attachments([
