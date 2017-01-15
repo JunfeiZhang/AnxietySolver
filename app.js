@@ -53,10 +53,12 @@ iDialog.matches('skipIntro', [
                 },
                 body: attachment.contentUrl
             };
+
+            builder.Prompts.text(session, JSON.stringify(options));
             
             request.post(options, function (err, httpResponse, body){
                 //console.log("Body: " + body.scores);
-                builder.Prompts.text(session, body);
+                builder.Prompts.text(session, body.scores);
                 // console.log("Error: " + err);
                 // console.log("Body: " + body);
                 builder.Prompts.text(session, "HAHAHAHA SADER");
