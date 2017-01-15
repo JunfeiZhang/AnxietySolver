@@ -65,15 +65,15 @@ iDialog.matches('skipIntro', [
             request.post(options, function (err, httpResponse, body){
                 builder.Prompts.text(session, body);
                 //console.log("Body: " + body.scores);
-                //  var theBody = JSON.parse(body);
-                //console.log("aaaaa  aaa" + body);
-                // console.log("aaaaa  bbb" + theBody);
+                var theBody = JSON.parse(body);
+                console.log("aaaaa  aaa" + body);
+                 console.log("aaaaa  bbb" + theBody);
                 // console.log("aaaaa  ccc" + theBody[0]);
                 // console.log("aaaaa  ddd" + theBody[0].scores);
                 // console.log("aaaaa  eee" + theBody[0].scores.anger);
                 
-                //  var angerScore = JSON.stringify(theBody[0].scores.anger);
-                //  builder.Prompts.text(session, angerScore);
+                  var angerScore = JSON.stringify(theBody[0].scores.anger);
+                  builder.Prompts.text(session, angerScore);
                 
                 // var info = body[0].scores.happiness;
                 // var ifHappy = body[0].scores.happiness + body[0].scores.surprise;
