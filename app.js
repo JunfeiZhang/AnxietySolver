@@ -59,7 +59,7 @@ bot.dialog('/', [
             //builder.Prompts.text(session, JSON.stringify(options));		             
 
             request.post(options, function (err, httpResponse, body){
-                //builder.Prompts.text(session, body);
+                console.log("cognitive service: "+body);
                 body = JSON.parse(body);
                 // var angerScore = body[0].scores.anger.toString();
                 // builder.Prompts.text(session, angerScore);
