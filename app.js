@@ -32,6 +32,60 @@ bot.dialog('/', iDialog);
 
 server.post('/api/messages', connector.listen());
 
+bot.dialog("/img", [
+    function (session, args, next) {
+        // builder.Prompts.text(session, "img");
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    .title("Cute Images")
+                    .subtitle("")
+                    .text("Life is colorful! Do you feel any better?")
+                    .images([
+                        builder.CardImage.create(session, "http://d13yacurqjgara.cloudfront.net/users/925514/screenshots/2612233/egg_new-01.jpg")
+                    ])
+                    .tap(builder.CardAction.openUrl(session, ""))
+            ]);
+            session.send(msg);
+        builder.Prompts.choice(session, "Do you like it?", "Yes,show me more|No, anything else?"); 
+    },
+    function (session, result) {
+        if (results.response) {
+            if(results.response.entity == 1){
+                session.replaceDialog("/img", true);
+            } else {
+                session.replaceDialog("/joke", true);
+                var joke = jokes[0];
+                session.send("%(content)s", joke); 
+            }
+        } else {
+            session.send("ok");
+        }
+    }
+])
+
+bot.dialog("/joke"[
+    function (session, args, next) {
+        // builder.Prompts.text(session, "img");
+        var joke = jokes[0];
+        session.send("%(content)s", joke); 
+        builder.Prompts.choice(session, "Do you like it?", "Yes,show me more|No, anything else?"); 
+    },
+    function (session, result) {
+        if (results.response) {
+            if(results.response.entity == 2){
+                session.replaceDialog("/img", true);
+            } else {
+                session.replaceDialog("/joke", true);
+            }
+        } else {
+            session.send("ok");
+        }
+    }
+])
+
+
 
 // Add intent handlers
 
@@ -56,10 +110,9 @@ iDialog.matches('skipIntro', [
     function (session, result) {
         if (results.response) {
             if(results.response.entity == 1){
-                session.replaceDialog('/', true);
+                session.replaceDialog("/img", true);
             } else {
-                var joke = jokes[0];
-                session.send("%(content)s", joke); 
+                session.replaceDialog("/joke", true);
             }
         } else {
             session.send("ok");
@@ -111,7 +164,7 @@ iDialog.matches('beHappy', [
                     result="You look fine";
                 }
                  builder.Prompts.text(session, result);
-                 session.beginDialog('/');
+                 session.replaceDialog("/img", true);
             });
         }
     }
