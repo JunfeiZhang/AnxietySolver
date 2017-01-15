@@ -75,7 +75,7 @@ iDialog.matches('skipIntro', [
                   var angerScore = JSON.stringify(theBody[0].scores.anger);
 
                   builder.Prompts.text(session, angerScore);
-                var numberScore = parseFloat(angerScore);
+                var numberScore = Number(angerScore);
                 builder.Prompts.text(session, numberScore);
                 // var info = body[0].scores.happiness;
                 // var ifHappy = body[0].scores.happiness + body[0].scores.surprise;
