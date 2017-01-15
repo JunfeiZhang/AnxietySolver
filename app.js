@@ -50,7 +50,7 @@ iDialog.matches('skipIntro', [
             picURL = attachment.contentUrl;
             var postData = { "url": picURL };
             var npostData = JSON.stringify(postData);
-            console.log("my json is !" + postData);
+            console.log("my json is !" + npostData);
             builder.Prompts.text(session, attachment.contentUrl);
             var options = {
                 uri: "https://api.projectoxford.ai/emotion/v1.0/recognize",
