@@ -35,6 +35,7 @@ server.post('/api/messages', connector.listen());
 // Add intent handlers
 iDialog.matches('skipIntro', [
     function (session, args, next) {
+
         builder.Prompts.text(session, "img");
         //builder.Prompts.choice(session, "Which region would you like sales for?", salesData); 
     },
@@ -64,14 +65,14 @@ iDialog.matches('skipIntro', [
 
             request.post(options, function (err, httpResponse, body){
                 //console.log("Body: " + body.scores);
-                var theBody = JSON.parse(body);
-                console.log("aaaaa  aaa" + body);
-                console.log("aaaaa  bbb" + theBody);
-                console.log("aaaaa  ccc" + theBody[0]);
-                console.log("aaaaa  ddd" + theBody[0].scores);
-                console.log("aaaaa  eee" + theBody[0].scores.anger);
-                var angerScore = theBody[0].scores.anger;
-                builder.Prompts.text(session, angerScore);
+                 var theBody = JSON.parse(body);
+                 console.log("aaaaa  aaa" + body);
+                // console.log("aaaaa  bbb" + theBody);
+                // console.log("aaaaa  ccc" + theBody[0]);
+                // console.log("aaaaa  ddd" + theBody[0].scores);
+                // console.log("aaaaa  eee" + theBody[0].scores.anger);
+                 var angerScore = "" + theBody[0].scores.anger;
+                 builder.Prompts.text(session, angerScore);
                 
                 // var info = body[0].scores.happiness;
                 // var ifHappy = body[0].scores.happiness + body[0].scores.surprise;
@@ -85,7 +86,7 @@ iDialog.matches('skipIntro', [
                 //     result="OK";
                 // }
                 // builder.Prompts.text(session, "HAHAHAHA SADER");
-
+                bulider.Prompts.text(session, "your result: "+body);
             });
         }
     }
