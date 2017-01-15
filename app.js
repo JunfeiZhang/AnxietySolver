@@ -44,6 +44,7 @@ iDialog.matches('skipIntro', [
             // Skype attachment URLs are secured by a JwtToken, so we need to pass the token from our bot.
             var attachment = msg.attachments[0];
             console.log(attachment.contentUrl + ".jpg");
+            builder.Prompts.text(session, attachment.contentUrl);
             var options = {
                 uri: "https://api.projectoxford.ai/emotion/v1.0/recognize",
                 headers: {
@@ -54,8 +55,8 @@ iDialog.matches('skipIntro', [
             };
             
             request.post(options, function (err, httpResponse, body){
-                console.log("Body: " + body.scores);
-                builder.Prompts.text(session, body.scores);
+                //console.log("Body: " + body.scores);
+                //builder.Prompts.text(session, body.scores);
                 // console.log("Error: " + err);
                 // console.log("Body: " + body);
                 builder.Prompts.text(session, "HAHAHAHA SADER");
