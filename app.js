@@ -11,17 +11,17 @@ var request = require('request');
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
-    console.log("server", server);
-    console.log("process", process);
-    console.log('%s listening to %s', server.name, server.url);
+   console.log('%s listening to %s', server.name, server.url); 
 });
-
+  
 // Create chat bot
 var connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 var bot = new builder.UniversalBot(connector);
+server.post('/api/messages', connector.listen());
+
 //var intents = new builder.IntentDialog();
 
 // // Create LUIS recognizer that points at our model and add it as the root '/' dialog for our Cortana Bot.
@@ -29,7 +29,6 @@ var bot = new builder.UniversalBot(connector);
 // var recognizer = new builder.LuisRecognizer(model);
 // var iDialog = new builder.IntentDialog({ recognizers: [recognizer] });
 
-server.post('/api/messages', connector.listen());
 
 
 bot.dialog('/', [
@@ -76,10 +75,37 @@ bot.dialog('/', [
                     result="You look fine";
                 }
                  builder.Prompts.text(session, result);
-                 session.beginDialog('/img');
+                //  session.beginDialog('/img');
             });
+    }},function (session, next) {
+        // builder.Prompts.text(session, "img");
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    .title("Cute Images")
+                    .subtitle("")
+                    .text("Life is colorful! Do you feel any better?")
+                    .images([
+                        builder.CardImage.create(session, "http://d13yacurqjgara.cloudfront.net/users/925514/screenshots/2612233/egg_new-01.jpg")
+                    ])
+                    .tap(builder.CardAction.openUrl(session, ""))
+            ]);
+            session.send(msg);
+        builder.Prompts.choice(session, "Do you like it?", "Yes,show me more|No, anything else?"); 
+    },
+    function (session, result) {
+        if (results.response) {
+            if(results.response.entity == 1){
+                session.beginDialog('/img');
+            } else {
+                session.beginDialog('/joke');
+            }
+        } else {
+            session.send("ok");
         }
-    }]);
+    }
+    ]);
 
 bot.dialog('/img', [
     function (session, args, next) {
