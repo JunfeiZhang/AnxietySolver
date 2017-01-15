@@ -1,20 +1,37 @@
-emotionDetection("http://static4.businessinsider.com/image/56c640526e97c625048b822a-480/donald-trump.jpg");
+var fs = require('fs');
+var request = require('request');
 
-function emotionDetection(picURL){
-    var https = require('https');
-    var fs = require('fs');
+var options = {
+    uri: "https://api.projectoxford.ai/emotion/v1.0/recognize",
+    headers: {
+        "Ocp-Apim-Subscription-Key": "ae677e2ca7bf470294d8ba60a788ab4a",
+        "Content-Type": "application/octet-stream"
+    },
+    body: fs.readFileSync('trump.jpg')
+};
 
-    var options = {
-        host: "api.projectoxford.ai",
-        port: 443,
-        path: '/emotion/v1.0/recognize',
-        method: 'POST',
-        headers: {
-            "Ocp-Apim-Subscription-Key": "ae677e2ca7bf470294d8ba60a788ab4a"
-        }
-    };
+request.post(options, function (err, httpResponse, body){
+    console.log("Error: " + err);
+    console.log("Body: " + body);
+});
 
-    var postData = { "url": picURL};
+/*
+function emotionDetection(picURL) {
+    var readStream = fs.createReadStream('trump.jpg');
+    var imgData = "";
+    readStream
+        .on('data', function (chunk) {
+            imgData += chunk;
+        })
+        .on('end', function () {
+            console.log(imgData);
+            console.log("image file read.");
+            beginDetection(imgData);
+        });
+}
+
+function beginDetection(imgData) {
+    
 
     var result;
 
@@ -44,6 +61,8 @@ function emotionDetection(picURL){
     });
 
 
-    req.write(JSON.stringify(postData));
+    req.write(imgData);
     req.end();
-}
+}*/
+
+//emotionDetection("http://static4.businessinsider.com/image/56c640526e97c625048b822a-480/donald-trump.jpg");

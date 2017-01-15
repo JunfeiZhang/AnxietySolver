@@ -1,1 +1,1 @@
-[{"faceRectangle":{"height":178,"left":183,"top":54,"width":178},"scores":{"anger":4.308098E-06,"contempt":0.00379616441,"disgust":0.000105404972,"fear":1.69607617E-07,"happiness":0.9912161,"neutral":0.003879234,"sadness":0.0009960682,"surprise":2.50642438E-06}}]
+{"error":{"code":"InvalidImageSize","message":"Image size is too small or too big."}}
