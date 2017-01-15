@@ -11,6 +11,8 @@ var request = require('request');
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
+    console.log("server", server);
+    console.log("process", process);
     console.log('%s listening to %s', server.name, server.url);
 });
 
@@ -54,6 +56,7 @@ iDialog.matches('skipIntro', [
                 body: attachment.contentUrl
             };
 
+            console.log("options", options);
             builder.Prompts.text(session, JSON.stringify(options));
             
             request.post(options, function (err, httpResponse, body){
