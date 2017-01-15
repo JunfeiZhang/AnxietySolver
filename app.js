@@ -76,6 +76,7 @@ bot.dialog('/', [
                 }
                  builder.Prompts.text(session, result);
                 //  session.beginDialog('/img');
+                next();
             });
     }},function (session, next) {
         // builder.Prompts.text(session, "img");
@@ -98,7 +99,7 @@ bot.dialog('/', [
         if (results.response) {
             if(results.response.entity == 1){
                 session.beginDialog('/img');
-            } else {
+            } else if(results.response.entity == 2){
                 session.beginDialog('/joke');
             }
         } else {
