@@ -1,0 +1,24 @@
+{
+  "name": "yi904835116",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harvey940906/AnxietySolver.git"
+  },
+  "keywords": [
+    "AnxietySolver"
+  ],
+  "author": "Long Tao,Carol Cheng, Patrick Yi, Linda Yang, Junfei Zhang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/harvey940906/AnxietySolver/issues"
+  },
+  "homepage": "https://github.com/harvey940906/AnxietySolver#readme",
+  "dependencies": {
+  }
+}
