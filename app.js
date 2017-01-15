@@ -53,7 +53,7 @@ bot.dialog('/img', [
     function (session, result) {
         if (results.response) {
             if(results.response.entity == 1){
-                session.replaceDialog("/img", true);
+                session.replaceDialog("/imgWRONG", true);
             } else {
                 session.replaceDialog("/joke", true);
                 var joke = jokes[0];
