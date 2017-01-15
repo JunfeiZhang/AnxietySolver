@@ -32,7 +32,7 @@ bot.dialog('/', iDialog);
 
 server.post('/api/messages', connector.listen());
 
-bot.dialog("/img", [
+bot.dialog('/img', [
     function (session, args, next) {
         // builder.Prompts.text(session, "img");
         var msg = new builder.Message(session)
@@ -65,7 +65,7 @@ bot.dialog("/img", [
     }
 ])
 
-bot.dialog("/joke"[
+bot.dialog('/joke', [
     function (session, args, next) {
         // builder.Prompts.text(session, "img");
         var joke = jokes[0];
