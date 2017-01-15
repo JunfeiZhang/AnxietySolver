@@ -50,13 +50,14 @@ iDialog.matches('skipIntro', [
                     "Ocp-Apim-Subscription-Key": "ae677e2ca7bf470294d8ba60a788ab4a",
                     "Content-Type": "application/octet-stream"
                 },
-                body: attachment.contentUrl + ".jpg"
+                body: attachment.content
             };
             
             request.post(options, function (err, httpResponse, body){
-                builder.Prompts.text(session, body[0].scores.sad);
-                console.log("Error: " + err);
-                console.log("Body: " + body);
+                console.log("Body: " + body.scores);
+                builder.Prompts.text(session, body.scores);
+                // console.log("Error: " + err);
+                // console.log("Body: " + body);
                 builder.Prompts.text(session, "HAHAHAHA SADER");
 
             });
