@@ -48,10 +48,9 @@ iDialog.matches('skipIntro', [
             console.log(attachment.contentUrl + ".jpg");
             picURL = attachment.contentUrl;
             var postData = { "url": picURL };
-            // var npostData = JSON.stringify(postData);
             var npostData = JSON.stringify(postData);
             console.log("my json is !" + npostData);
-            builder.Prompts.text(session, attachment.contentUrl);
+            //builder.Prompts.text(session, attachment.contentUrl);
             var options = {
                 uri: "https://api.projectoxford.ai/emotion/v1.0/recognize",
                 headers: {
@@ -64,14 +63,15 @@ iDialog.matches('skipIntro', [
             builder.Prompts.text(session, JSON.stringify(options));		             
 
             request.post(options, function (err, httpResponse, body){
+                bulider.Prompts.text(session, body);
                 //console.log("Body: " + body.scores);
                 //  var theBody = JSON.parse(body);
-                 console.log("aaaaa  aaa" + body);
+                //console.log("aaaaa  aaa" + body);
                 // console.log("aaaaa  bbb" + theBody);
                 // console.log("aaaaa  ccc" + theBody[0]);
                 // console.log("aaaaa  ddd" + theBody[0].scores);
                 // console.log("aaaaa  eee" + theBody[0].scores.anger);
-                bulider.Prompts.text(session, body);
+                
                 //  var angerScore = JSON.stringify(theBody[0].scores.anger);
                 //  builder.Prompts.text(session, angerScore);
                 
@@ -86,7 +86,7 @@ iDialog.matches('skipIntro', [
                 // }else{
                 //     result="OK";
                 // }
-                // builder.Prompts.text(session, "HAHAHAHA SADER");
+                 builder.Prompts.text(session, "HAHAHAHA SADER");
                 
             });
         }
