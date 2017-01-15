@@ -110,9 +110,9 @@ iDialog.matches('skipIntro', [
     function (session, result) {
         if (results.response) {
             if(results.response.entity == 1){
-                session.replaceDialog("/img", true);
+                session.replaceDialog("../img", true);
             } else {
-                session.replaceDialog("/joke", true);
+                session.replaceDialog("../joke", true);
             }
         } else {
             session.send("ok");
@@ -164,7 +164,7 @@ iDialog.matches('beHappy', [
                     result="You look fine";
                 }
                  builder.Prompts.text(session, result);
-                 session.replaceDialog("/img", true);
+                 session.replaceDialog("../img", true);
             });
         }
     }
