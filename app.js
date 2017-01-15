@@ -32,7 +32,9 @@ bot.dialog('/', iDialog);
 
 server.post('/api/messages', connector.listen());
 
+
 // Add intent handlers
+
 iDialog.matches('skipIntro', [
     function (session, args, next) {
         // builder.Prompts.text(session, "img");
@@ -54,7 +56,7 @@ iDialog.matches('skipIntro', [
     function (session, result) {
         if (results.response) {
             if(results.response.entity == 1){
-                session.replaceDialog('skipIntro', true);
+                session.replaceDialog('/', true);
             } else {
                 var joke = jokes[0];
                 session.send("%(content)s", joke); 
@@ -109,7 +111,7 @@ iDialog.matches('beHappy', [
                     result="You look fine";
                 }
                  builder.Prompts.text(session, result);
-                 session.beginDialog('skipIntro');
+                 session.beginDialog('/');
             });
         }
     }
