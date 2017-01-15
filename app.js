@@ -51,7 +51,7 @@ iDialog.matches('skipIntro', [
                     "Ocp-Apim-Subscription-Key": "ae677e2ca7bf470294d8ba60a788ab4a",
                     "Content-Type": "application/octet-stream"
                 },
-                body: attachment.content
+                body: attachment.contentUrl
             };
             
             request.post(options, function (err, httpResponse, body){
