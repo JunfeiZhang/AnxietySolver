@@ -63,7 +63,7 @@ iDialog.matches('skipIntro', [
             builder.Prompts.text(session, JSON.stringify(options));		             
 
             request.post(options, function (err, httpResponse, body){
-                bulider.Prompts.text(session, body);
+                builder.Prompts.text(session, body);
                 //console.log("Body: " + body.scores);
                 //  var theBody = JSON.parse(body);
                 //console.log("aaaaa  aaa" + body);
