@@ -49,6 +49,7 @@ iDialog.matches('skipIntro', [
             console.log(attachment.contentUrl + ".jpg");
             picURL = attachment.contentUrl;
             var postData = { "url": picURL };
+            var npostData = JSON.stringify(postData);
             console.log("my json is !" + postData);
             builder.Prompts.text(session, attachment.contentUrl);
             var options = {
@@ -57,7 +58,7 @@ iDialog.matches('skipIntro', [
                     "Ocp-Apim-Subscription-Key": "94f9f2bdd86b4bffa775d4b35da04dfa",
                     "Content-Type": "application/json"
                 },
-                body: body
+                body: npostData
             };
             console.log("options", options);
             builder.Prompts.text(session, JSON.stringify(options));		             
