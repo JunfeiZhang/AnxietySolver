@@ -76,9 +76,11 @@ bot.dialog('/', [
                 }
                  builder.Prompts.text(session, result);
                 //  session.beginDialog('/img');
-                next();
+                
             });
-    }},function (session, next) {
+            next();
+        }},
+        function (session, next) {
         // builder.Prompts.text(session, "img");
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
