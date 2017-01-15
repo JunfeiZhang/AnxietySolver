@@ -79,7 +79,7 @@ iDialog.matches('skipIntro', [
                 }else{
                     result="OK";
                 }
-                 builder.Prompts.text(session, "HAHAHAHA SADER");
+                 builder.Prompts.text(session, result);
                 
             });
         }
