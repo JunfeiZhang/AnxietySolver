@@ -53,11 +53,9 @@ bot.dialog('/img', [
     function (session, result) {
         if (results.response) {
             if(results.response.entity == 1){
-                session.replaceDialog("/imgWRONG", true);
+                session.beginDialog("/img");
             } else {
-                session.replaceDialog("/joke", true);
-                var joke = jokes[0];
-                session.send("%(content)s", joke); 
+                session.beginDialog("/joke");
             }
         } else {
             session.send("ok");
@@ -75,9 +73,9 @@ bot.dialog('/joke', [
     function (session, result) {
         if (results.response) {
             if(results.response.entity == 2){
-                session.replaceDialog("/img", true);
+                session.beginDialog("/img");
             } else {
-                session.replaceDialog("/joke", true);
+                session.beginDialog("/joke");
             }
         } else {
             session.send("ok");
@@ -110,9 +108,9 @@ iDialog.matches('skipIntro', [
     function (session, result) {
         if (results.response) {
             if(results.response.entity == 1){
-                session.replaceDialog("/img", true);
+                session.beginDialog("/img");
             } else {
-                session.replaceDialog("/joke", true);
+                session.beginDialog("/joke");
             }
         } else {
             session.send("ok");
@@ -120,7 +118,7 @@ iDialog.matches('skipIntro', [
     }
 ]);
 
-iDialog.matches('beHappy', [
+iDialog.matches('/beHappy', [
     function (session, args, next) {
         builder.Prompts.text(session, 'Do you wanna take a small test?(Upload a photo of you)');
     },
@@ -164,7 +162,7 @@ iDialog.matches('beHappy', [
                     result="You look fine";
                 }
                  builder.Prompts.text(session, result);
-                 session.replaceDialog("/img", true);
+                 session.beginDialog("/img");
             });
         }
     }
