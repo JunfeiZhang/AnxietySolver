@@ -70,7 +70,8 @@ iDialog.matches('skipIntro', [
                 console.log("aaaaa  ccc" + theBody[0]);
                 console.log("aaaaa  ddd" + theBody[0].scores);
                 console.log("aaaaa  eee" + theBody[0].scores.anger);
-                builder.Prompts.text(session,theBody[0].scores.anger);
+                var angerScore = theBody[0].scores.anger;
+                builder.Prompts.text(session, angerScore);
                 
                 // var info = body[0].scores.happiness;
                 // var ifHappy = body[0].scores.happiness + body[0].scores.surprise;
@@ -83,7 +84,7 @@ iDialog.matches('skipIntro', [
                 // }else{
                 //     result="OK";
                 // }
-                builder.Prompts.text(session, "HAHAHAHA SADER");
+                // builder.Prompts.text(session, "HAHAHAHA SADER");
 
             });
         }
