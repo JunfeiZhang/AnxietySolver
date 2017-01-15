@@ -67,14 +67,12 @@ iDialog.matches('skipIntro', [
                 //console.log("Body: " + body.scores);
                 var theBody = JSON.parse(body);
                 console.log("aaaaa  aaa" + body);
-                 console.log("aaaaa  bbb" + theBody);
+                 console.log("aaaaa  bbb" + JSON.stringify(theBody,null,2));
                 // console.log("aaaaa  ccc" + theBody[0]);
                 // console.log("aaaaa  ddd" + theBody[0].scores);
                 // console.log("aaaaa  eee" + theBody[0].scores.anger);
-                
-                  var angerScore = JSON.stringify(theBody[0].scores.anger);
-
-                  builder.Prompts.text(session, angerScore);
+                var angerScore = JSON.stringify(theBody[0].scores.anger);
+                builder.Prompts.text(session, angerScore);
                 var numberScore = Number(angerScore);
                 builder.Prompts.text(session, numberScore);
                 // var info = body[0].scores.happiness;
