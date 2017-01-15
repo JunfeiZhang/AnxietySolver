@@ -52,10 +52,13 @@ iDialog.matches('skipIntro', [
                 },
                 body: attachment.contentUrl + ".jpg"
             };
-
+            
             request.post(options, function (err, httpResponse, body){
+                builder.Prompts.text(session, body[0].scores.sad);
                 console.log("Error: " + err);
                 console.log("Body: " + body);
+                builder.Prompts.text(session, body[0].scores.sad);
+
             });
             // var options = {
             //     host: "api.projectoxford.ai",
