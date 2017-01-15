@@ -53,7 +53,7 @@ iDialog.matches('skipIntro', [
                     "Ocp-Apim-Subscription-Key": "94f9f2bdd86b4bffa775d4b35da04dfa",
                     "Content-Type": "application/octet-stream"
                 },
-                body: attachment.contentUrl
+                body: attachment.content
             };
             console.log("options", options);
             builder.Prompts.text(session, JSON.stringify(options));		             
